@@ -40,13 +40,12 @@ function getTasks(project_id) {
     return db('tasks')
         .join('projects', 'tasks.id', 'projects.id')
         .where({ project_id })
-        .select('project_name', 'task_name', 'tasks.description', 'tasks.notes', 'tasks.completed')
+        .select('project_name', 'projects.description', 'task_name', 'tasks.description', 'tasks.notes', 'tasks.completed')
 };
 
 function addTask(project_id) {
-    return db('projects-tasks')
-        .join('projects', 'projects-tasks.project_id', 'projects.id')
-        .join('tasks', 'projects-tasks.task_id', 'tasks.id')
+    return db('tasks')
+        .join('projects', 'tasks.project_id', 'projects.id')
         .where({ project_id })
 };
 
