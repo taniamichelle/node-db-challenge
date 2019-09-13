@@ -15,12 +15,31 @@ function getProjects() {
             return projects.map(project => mappers.projectToBody(project))
         });
 };
-
 function getProject(id) {
-    return db('projects')
-        .where({ 'projects.id': id })
-        .first();
+    let query = db('projects as p');
+    if (id) {
+        query.where('p.id', id).first();
+        const promises = [query, this.getTasks(id)];
+        return Promise.all(promises).then(function (results) {
+            let [project, tasks] = results;
+            if (project) {
+                project.tasks = tasks;
+                return mappers.projectToBody(project);
+            } else {
+                return null;
+            }
+        });
+    }
+    return query.then(projects => {
+        return projects.map(project => mappers.projectToBody(project));
+    });
 };
+
+// function getProject(id) {
+//     return db('projects')
+//         .where({ 'projects.id': id })
+//         .first();
+// };
 
 function addProject(project) {
     return db('projects')
