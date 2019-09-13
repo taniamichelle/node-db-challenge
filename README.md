@@ -40,11 +40,19 @@ Demonstrate your understanding of this week's concepts by answering the followin
 
 - [ ] Explain the difference between `Relational Databases` and `SQL`.
 
+SQL is a query language for writing JS for a relational DB.
+
 - [ ] Why do tables need a `primary key`?
+
+They need a primary key in order to reference other tables containing data they need to access.
 
 - [ ] What is the name given to a table column that references the primary key on another table.
 
+This is called a foreign key.
+
 - [ ] What do we need in order to have a _many to many_ relationship between two tables.
+
+You must add a table to connect them based on the same type of variable (e.g. tableone_id to tabletwo_id).
 
 ## Minimum Viable Product
 
