@@ -13,6 +13,18 @@ router.get('/', (req, res) => {
         });
 });
 
+router.post('/', (req, res) => {
+    const projectData = req.body;
+    Projects.addProject(projectData)
+        .then(project => {
+            res.status(201).json(project);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ error: 'Error adding project.' });
+        });
+});
+
 router.get('/:id', (req, res) => {
     const { id } = req.params;
     Projects.getProject(id)
@@ -26,18 +38,6 @@ router.get('/:id', (req, res) => {
         .catch(err => {
             console.log(err);
             res.status(500).json({ error: 'Error retrieving project by that id.' });
-        });
-});
-
-router.post('/', (req, res) => {
-    const projectData = req.body;
-    Projects.addProject(projectData)
-        .then(project => {
-            res.status(201).json(project);
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({ error: 'Error adding project.' });
         });
 });
 
@@ -77,4 +77,39 @@ router.post('/:id/tasks', (req, res) => {
         });
 });
 
+router.get('/:id/resources', (req, res) => {
+    const { id: project_id } = req.params;
+    Projects.getResources(project_id)
+        .then(resources => {
+            if (resources) {
+                return res.json(resources);
+            } else {
+                return res.status(404).json({ error: "Could not find project by that id." });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ error: 'Error retrieving resources by that id.' });
+        });
+});
+
+// router.post('/:id/tasks', (req, res) => {
+//     const taskData = req.body;
+//     const { id } = req.params;
+//     Projects.getProject(id)
+//         .then(project => {
+//             if (project) {
+//                 Projects.addTask(taskData, id)
+//                     .then(task => {
+//                         res.status(201).json(task)
+//                     })
+//             } else {
+//                 res.status(404).json({ message: 'Could not find project with given id.' })
+//             }
+//         })
+//         .catch(err => {
+//             console.log(err);
+//             res.status(500).json({ error: 'Error adding task.' });
+//         });
+// });
 module.exports = router;

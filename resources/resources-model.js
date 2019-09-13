@@ -6,9 +6,14 @@ module.exports = {
 };
 
 function getResources() {
-
+    return db('resources');
 };
 
-function addResource() {
+function addResource(resource) {
+    return db('resources')
+        .insert(resource)
+        .then(resource => {
+            return resource;
+        });
 
 };

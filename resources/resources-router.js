@@ -14,7 +14,8 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-    Resources.addResource()
+    const resourceData = req.body;
+    Resources.addResource(resourceData)
         .then(resource => {
             res.status(201).json(resource);
         })
