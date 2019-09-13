@@ -1,4 +1,5 @@
 const db = require('../data/db-config');
+const mappers = require('../helpers/mappers');
 
 module.exports = {
     getProjects,
@@ -7,7 +8,6 @@ module.exports = {
     getTasks,
     addTask
 };
-
 
 function getProjects() {
     return db('projects');
@@ -32,6 +32,7 @@ function getTasks(project_id) {
         .join('projects', 'tasks.id', 'projects.id')
         .where({ project_id })
         .select('project_name', 'projects.description', 'task_name', 'tasks.description', 'tasks.notes', 'tasks.completed')
+        .then(tasks => tasks.map(task => mappers.taskToBody(task)));
 };
 
 function addTask(project_id) {
@@ -39,30 +40,3 @@ function addTask(project_id) {
         .join('projects', 'tasks.project_id', 'projects.id')
         .where({ project_id })
 };
-
-// function intToBoolean(int) {
-//     return int === 1 ? true : false;
-// };
-
-// function projectToBody(project) {
-//     const result = {
-//         ...project,
-//         completed: intToBoolean(project.completed),
-//     };
-
-//     if (project.task) {
-//         result.task = project.task.map(task => ({
-//             ...task,
-//             completed: intToBoolean(task.completed),
-//         }));
-//     }
-
-//     return result;
-// };
-
-// function taskToBody(task) {
-//     return {
-//         ...task,
-//         completed: intToBoolean(task.completed),
-//     };
-// }; 
